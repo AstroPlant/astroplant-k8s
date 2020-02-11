@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: minio-minikube
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  rules:
+  - host: minio.astroplant-daphne.sda-projects.nl
+    http:
+      paths:
+      - backend:
+          serviceName: minio
+          servicePort: 9000
+        path: /

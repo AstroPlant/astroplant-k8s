@@ -1,0 +1,73 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ubuntu
+  namespace: default 
+spec:
+  template:
+    metadata:
+      labels:
+        app: ubuntu
+    spec:
+      containers:
+      - name: ubuntu
+        image: ubuntu:18.04
+        command: ["tail", "-f", "/dev/null"]
+        volumeMounts:
+        - mountPath: /var/authorized-keys
+          name: authorized-keys
+        ports:
+        - containerPort: 22
+          name: "ssh"
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
+          limits:
+            cpu: 1
+            memory: 1Gi
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - "bash"
+                - "-c"
+                - >
+                  apt-get update;
+                  apt-get install -y git vim curl jq;
+
+                  apt-get install -y openssh-server;
+                  echo "PermitRootLogin without-password" >> /etc/ssh/sshd_config;
+                  service ssh restart;
+                  mkdir /root/.ssh;
+                  cp /var/authorized-keys/authorized_keys /root/.ssh/authorized_keys;
+                  chown root:root /root/.ssh/authorized_keys;
+                  chmod 640 /root/.ssh/authorized_keys;
+
+                  apt-get install -y python3-pip python3-dev;
+                  ln -s /usr/bin/python3 /usr/local/bin/python;
+                  pip3 install --upgrade pip
+
+                  wget https://dl.min.io/client/mc/release/linux-amd64/mc -P /usr/bin;
+                  chmod +x /usr/bin/mc;
+
+                  apt-get install -y mosquitto-clients;
+
+                  apt-get install -y gnupg2 software-properties-common;
+                  wget -qO - https://packages.confluent.io/deb/5.3/archive.key | apt-key add -;
+                  add-apt-repository "deb [arch=amd64] https://packages.confluent.io/deb/5.3 stable main";
+                  apt-get update;
+                  apt-get install -y confluent-community-2.12;
+                  apt-get install -y default-jre;
+
+                  wget http://ftp.tudelft.nl/apache/avro/avro-1.9.0/java/avro-tools-1.9.0.jar;
+                  apt-get install -y capnproto;
+
+                  apt-get install -y kafkacat;
+      volumes:
+      - name: authorized-keys
+        secret:
+          secretName: authorized-keys
+          items:
+          - key: authorized_keys
+            path: authorized_keys

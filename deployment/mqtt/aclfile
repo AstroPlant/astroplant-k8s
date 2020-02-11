@@ -1,0 +1,14 @@
+# ACLs from the files backend do not work!
+# We leave it empty, i.e. only superusers can read/write to topics.
+
+# This only affects clients with username "admin".
+#user admin
+#topic read $SYS/#
+#topic #
+
+# This only affects clients with username "pipeline".
+#user pipeline
+#topic read kit/#
+
+# This affects all clients.
+pattern write $SYS/broker/connection/%c/state

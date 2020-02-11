@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kafka2db-aggregate
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app: kafka2db-aggregate
+    spec:
+      containers:
+      - name: kafka2db
+        image: salekd/astroplant-kafka2db:0.1.0
+        imagePullPolicy: Always
+        command: [ "python", "kafka_db_connector/connector.py", "run", "--stream", "aggregate" ]
+        env:
+          - name: "DATABASE_HOST"
+            value: postgresql.default.svc.cluster.local
+          - name: "DATABASE_PORT"
+            value: "5432"
+          - name: "DATABASE_USERNAME"
+            value: pipeline
+          - name: "DATABASE_PASSWORD"
+            value: {{PIPELINE_PASSWORD}}
+          - name: "DATABASE_DATABASE"
+            value: astroplant
+          - name: "KAFKA_HOST"
+            value: kafka-cp-kafka-headless.default.svc.cluster.local
+          - name: "KAFKA_PORT"
+            value: "9092"
+          - name: "KAFKA_CONSUMER_GROUP"
+            value: server-aggregate-group
+          - name: "LOG_LEVEL"
+            value: DEBUG

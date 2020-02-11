@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: simulation
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app: simulation
+    spec:
+      containers:
+      - name: simulation
+        image: salekd/astroplant-simulation:0.0.2
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+          - name: simulation-config
+            mountPath: /kit/kit_config.toml
+            subPath: kit_config.toml
+            readOnly: true
+
+      volumes:
+      - name: simulation-config
+        configMap:
+          name: simulation
+          items:
+            - key: kit_config.toml
+              path: kit_config.toml

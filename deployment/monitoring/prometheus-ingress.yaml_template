@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    # Restrict access to the office network and VPN.
+    nginx.ingress.kubernetes.io/whitelist-source-range: 145.100.1.0/24,145.100.19.0/24
+  labels:
+    cattle.io/creator: norman
+  name: prometheus
+  namespace: default
+spec:
+  rules:
+  - host: prometheus.{{CLUSTER}}
+    http:
+      paths:
+      - backend:
+          serviceName: prometheus-server
+          servicePort: 80
+        path: /
+status:
+  loadBalancer: {}

@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: api
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: salekd/astroplant-api:0.0.2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: "rest"
+        - containerPort: 8081
+          name: "ws"
+        env:
+          - name: "DATABASE_URL"
+            value: postgres://postgres:{{PASSWORD}}@postgresql.default.svc.cluster.local:5432/astroplant
+          - name: "MQTT_HOST"
+            value: mosquitto.default.svc.cluster.local
+          - name: "MQTT_PORT"
+            value: "1883"
+          - name: "MQTT_USERNAME"
+            value: admin
+          - name: "MQTT_PASSWORD"
+            value: {{PASSWORD}}
+          - name: "RUST_BACKTRACE"
+            value: "1"
+          - name: "RUST_LOG"
+            value: warn,astroplant_rs_api=debug

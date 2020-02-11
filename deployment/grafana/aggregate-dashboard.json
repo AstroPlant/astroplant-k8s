@@ -1,0 +1,484 @@
+{
+  "dashboard": {
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": null,
+    "iteration": 1564760330017,
+    "links": [],
+    "panels": [
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "PostgreSQL",
+        "fill": 1,
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": false,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {},
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": false,
+            "rawSql": "SELECT\n  start_datetime AS \"time\",\n  value\nFROM aggregate_measurements\nWHERE\n  $__timeFilter(start_datetime) AND\n  kit_id = $kit_id AND\n  peripheral_id = $peripheral_id AND\n  quantity_type_id = $quantity_type_id AND\n  aggregate_type = '$aggregate_type'\nORDER BY 1",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "aggregate_measurements",
+            "timeColumn": "start_datetime",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              },
+              {
+                "datatype": "int4",
+                "name": "",
+                "params": [
+                  "kit_id",
+                  "=",
+                  "$kit_id"
+                ],
+                "type": "expression"
+              },
+              {
+                "datatype": "int4",
+                "name": "",
+                "params": [
+                  "peripheral_id",
+                  "=",
+                  "$peripheral_id"
+                ],
+                "type": "expression"
+              },
+              {
+                "datatype": "int4",
+                "name": "",
+                "params": [
+                  "quantity_type_id",
+                  "=",
+                  "$quantity_type_id"
+                ],
+                "type": "expression"
+              },
+              {
+                "datatype": "varchar",
+                "name": "",
+                "params": [
+                  "aggregate_type",
+                  "=",
+                  "'$aggregate_type'"
+                ],
+                "type": "expression"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$aggregate_type $physical_quantity [$physical_unit_symbol]",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "schemaVersion": 18,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "allValue": null,
+          "current": {
+            "tags": [],
+            "text": "k_develop",
+            "value": "1"
+          },
+          "datasource": "PostgreSQL",
+          "definition": "SELECT id AS __value, serial as __text FROM kits",
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "kit_id",
+          "options": [
+            {
+              "selected": true,
+              "text": "k_develop",
+              "value": "1"
+            }
+          ],
+          "query": "SELECT id AS __value, serial as __text FROM kits",
+          "refresh": 0,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "tags": [],
+            "text": "Virtual barometer",
+            "value": "3"
+          },
+          "datasource": "PostgreSQL",
+          "definition": "SELECT id AS __value, name as __text FROM peripherals WHERE kit_id = $kit_id",
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "peripheral_id",
+          "options": [
+            {
+              "selected": true,
+              "text": "Virtual barometer",
+              "value": "3"
+            },
+            {
+              "selected": false,
+              "text": "Virtual pressure",
+              "value": "2"
+            },
+            {
+              "selected": false,
+              "text": "Virtual temperature",
+              "value": "1"
+            }
+          ],
+          "query": "SELECT id AS __value, name as __text FROM peripherals WHERE kit_id = $kit_id",
+          "refresh": 0,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "text": "Virtual barometer",
+            "value": "3"
+          },
+          "datasource": "PostgreSQL",
+          "definition": "SELECT id AS __value, name as __text FROM peripherals WHERE id = $peripheral_id",
+          "hide": 2,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "peripheral_definition_id",
+          "options": [
+            {
+              "selected": true,
+              "text": "Virtual barometer",
+              "value": "3"
+            }
+          ],
+          "query": "SELECT id AS __value, name as __text FROM peripherals WHERE id = $peripheral_id",
+          "refresh": 0,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "text": "Pressure",
+            "value": "2"
+          },
+          "datasource": "PostgreSQL",
+          "definition": "SELECT id AS __value, physical_quantity as __text FROM quantity_types WHERE id = $quantity_type_id",
+          "hide": 2,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "physical_quantity",
+          "options": [
+            {
+              "selected": true,
+              "text": "Pressure",
+              "value": "2"
+            }
+          ],
+          "query": "SELECT id AS __value, physical_quantity as __text FROM quantity_types WHERE id = $quantity_type_id",
+          "refresh": 0,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "tags": [],
+            "text": "2",
+            "value": "2"
+          },
+          "datasource": "PostgreSQL",
+          "definition": "SELECT a.quantity_type_id AS __value, b.physical_quantity AS __text FROM peripheral_definition_expected_quantity_type AS a LEFT JOIN quantity_types AS b ON a.quantity_type_id=b.id WHERE a.peripheral_definition_id = $peripheral_definition_id",
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "quantity_type_id",
+          "options": [
+            {
+              "selected": false,
+              "text": "Temperature",
+              "value": "1"
+            },
+            {
+              "selected": true,
+              "text": "Pressure",
+              "value": "2"
+            },
+            {
+              "selected": false,
+              "text": "Humidity",
+              "value": "3"
+            }
+          ],
+          "query": "SELECT a.quantity_type_id AS __value, b.physical_quantity AS __text FROM peripheral_definition_expected_quantity_type AS a LEFT JOIN quantity_types AS b ON a.quantity_type_id=b.id WHERE a.peripheral_definition_id = $peripheral_definition_id",
+          "refresh": 0,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "text": "Hectopascal",
+            "value": "Hectopascal"
+          },
+          "datasource": "PostgreSQL",
+          "definition": "SELECT physical_unit as __text FROM quantity_types WHERE id = $quantity_type_id",
+          "hide": 2,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "physical_unit",
+          "options": [
+            {
+              "selected": true,
+              "text": "Hectopascal",
+              "value": "Hectopascal"
+            }
+          ],
+          "query": "SELECT physical_unit as __text FROM quantity_types WHERE id = $quantity_type_id",
+          "refresh": 0,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "text": "hPa",
+            "value": "hPa"
+          },
+          "datasource": "PostgreSQL",
+          "definition": "SELECT physical_unit_symbol as __text FROM quantity_types WHERE id = $quantity_type_id",
+          "hide": 2,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "physical_unit_symbol",
+          "options": [
+            {
+              "selected": true,
+              "text": "hPa",
+              "value": "hPa"
+            }
+          ],
+          "query": "SELECT physical_unit_symbol as __text FROM quantity_types WHERE id = $quantity_type_id",
+          "refresh": 0,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "tags": [],
+            "text": "maximum",
+            "value": "maximum"
+          },
+          "datasource": "PostgreSQL",
+          "definition": "SELECT aggregate_type FROM aggregate_measurements WHERE kit_id = $kit_id AND peripheral_id = $peripheral_id",
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "aggregate_type",
+          "options": [
+            {
+              "selected": true,
+              "text": "maximum",
+              "value": "maximum"
+            }
+          ],
+          "query": "SELECT aggregate_type FROM aggregate_measurements WHERE kit_id = $kit_id AND peripheral_id = $peripheral_id",
+          "refresh": 0,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-1y",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "",
+    "title": "Aggregate Measurements",
+    "uid": "Z_u6ScvZk",
+    "version": 5
+  }
+}

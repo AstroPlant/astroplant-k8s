@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mqtt-exporter
+  namespace: default
+data:
+  mqtt-exporter.cfg: |-
+    [Log]
+    level = INFO
+
+    [MQTT]
+    #host = mosquitto
+    host = localhost
+    port = 1883
+    user = admin
+    password = UhATjuoMPjg7Ug
+    topics = kit

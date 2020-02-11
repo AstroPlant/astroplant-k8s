@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: simulation
+  namespace: default
+data:
+  kit_config.toml: |-
+    [message_broker]
+    host = "mosquitto.default.svc.cluster.local"
+    port = 1883
+
+    [message_broker.auth]
+    serial = "k-test"
+    secret = "{{SIMULATION_PASSWORD}}""
+
+    [debug]
+    level = "INFO"
+
+    [debug.peripheral_display]
+    module_name = "astroplant_kit.peripheral"
+    class_name = "DebugDisplay"

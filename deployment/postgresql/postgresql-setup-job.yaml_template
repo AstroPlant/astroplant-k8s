@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgresql-setup
+  namespace: default
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      containers:
+      - name: postgresql-setup
+        image: salekd/astroplant-kafka2db:0.1.0
+        imagePullPolicy: Always
+        command: [ "/bin/sh", "-c" ]
+        args: [ "python kafka_db_connector/connector.py setup-schema && python kafka_db_connector/connector.py insert-definitions --simulation-definitions" ]
+        env:
+          - name: "DATABASE_HOST"
+            value: postgresql.default.svc.cluster.local
+          - name: "DATABASE_PORT"
+            value: "5432"
+          - name: "DATABASE_USERNAME"
+            value: postgres
+          - name: "DATABASE_PASSWORD"
+            value: {{PASSWORD}}
+          - name: "DATABASE_DATABASE"
+            value: astroplant
+          - name: "KAFKA_HOST"
+            value: kafka-cp-kafka-headless.default.svc.cluster.local
+          - name: "KAFKA_PORT"
+            value: "9092"
+          - name: "KAFKA_CONSUMER_GROUP"
+            value: server-aggregate-group
+      restartPolicy: Never

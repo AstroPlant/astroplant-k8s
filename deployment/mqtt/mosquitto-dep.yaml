@@ -1,0 +1,75 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mosquitto
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: /
+        prometheus.io/port: '8000'
+    spec:
+      containers:
+
+      # Mosquitto broker
+      - name: mosquitto
+        image: salekd/mosquitto-auth:0.0.2
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        ports:
+        - containerPort: 1883
+          name: "mqtt"
+        - containerPort: 9090
+          name: "websocket"
+        volumeMounts:
+          - name: mosquitto-config
+            mountPath: /etc/mosquitto/mosquitto.conf
+            subPath: mosquitto.conf
+            readOnly: true
+          - name: mosquitto-config
+            mountPath: /etc/mosquitto/aclfile
+            subPath: aclfile
+            readOnly: true
+          - name: mosquitto-config
+            mountPath: /etc/mosquitto/pwfile
+            subPath: pwfile
+            readOnly: true
+
+      # MQTT metrics exporter
+      - name: mqtt-exporter
+        image: salekd/mqtt-exporter:1.2.0
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+          - name: mqtt-exporter-config
+            mountPath: /mqtt-exporter.cfg
+            subPath: mqtt-exporter.cfg
+            readOnly: true
+
+      volumes:
+      - name: mosquitto-config
+        configMap:
+          name: mosquitto
+          items:
+            - key: mosquitto.conf
+              path: mosquitto.conf
+            - key: aclfile
+              path: aclfile
+            - key: pwfile
+              path: pwfile
+      - name: mqtt-exporter-config
+        configMap:
+          name: mqtt-exporter
+          items:
+            - key: mqtt-exporter.cfg
+              path: mqtt-exporter.cfg
