@@ -24,3 +24,7 @@ while [ -n "$(mc config host add astroplant https://minio.$CLUSTER admin $PASSWO
   echo "Waiting for Minio to become accessible externally."
   sleep 5
 done
+
+# Create a publicly accessible bucket.
+mc mb astroplant/public
+mc policy public astroplant/public
