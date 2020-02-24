@@ -27,4 +27,5 @@ done
 
 # Create a publicly accessible bucket.
 mc mb astroplant/public
-mc policy public astroplant/public
+mc policy download astroplant/public
+mc policy list astroplant/public
