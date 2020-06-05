@@ -8,6 +8,8 @@ astroplant.capnp
 message*.bin
 message*.txt
 dashboard.json
+kubeconfig.yaml
+.envrc
 
 api-dep.yaml
 api-ingress.yaml
