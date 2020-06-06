@@ -1,13 +1,21 @@
-# Automated pipeline
+# Measurement pipelines
+
+## Docker image
+
+To push new docker images to the docker hub registry, run:
 
 ```
-python -c "import uuid;print(uuid.uuid4().hex)"
+export DOCKER_ID_USER="salekd"
+docker login https://index.docker.io/v1/
 
-PGPASSWORD=$PASSWORD psql --host postgresql.$CLUSTER --port 9999 -U postgres -d astroplant \
-  -c "SELECT id FROM peripherals WHERE name='test-virtual-temperature'" -t
-PGPASSWORD=$PASSWORD psql --host postgresql.$CLUSTER --port 9999 -U postgres -d astroplant \
-  -c "SELECT id FROM quantity_types WHERE physical_quantity='Temperature'" -t
+git clone https://github.com/AstroPlant/astroplant-backend.git
+cd astroplant-backend
+docker build -f mqtt-connector/Dockerfile . -t astroplant-mqtt-connector
+docker tag astroplant-mqtt-connector $DOCKER_ID_USER/astroplant-mqtt-connector:0.0.1
+docker push $DOCKER_ID_USER/astroplant-mqtt-connector:0.0.1
 ```
+
+Replace `mqtt` for `kafka` in the above to instead push astroplant-mqtt-connector to the docker hub registry.
 
 ```
 echo """(

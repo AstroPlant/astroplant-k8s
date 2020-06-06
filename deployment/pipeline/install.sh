@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/usr/bin/env -S bash -x
 # Copyright 2020, SURFsara.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

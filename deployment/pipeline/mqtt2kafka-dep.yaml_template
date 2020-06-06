@@ -11,7 +11,9 @@ spec:
     spec:
       containers:
       - name: mqtt2kafka
-        image: salekd/astroplant-mqtt2kafka:0.1.0
+        image: thomaschurchman/astroplant-mqtt-connector:0.0.1
+        imagePullPolicy: Always
+        command: [ "astroplant-mqtt-connector", "to-kafka" ]
         imagePullPolicy: Always
         env:
           - name: "MQTT_HOST"
