@@ -27,6 +27,14 @@ spec:
             value: admin
           - name: "MQTT_PASSWORD"
             value: {{PASSWORD}}
+          - name: "AWS_S3_ENDPOINT"
+            value: http://minio.default.svc.cluster.local:9000
+          - name: "AWS_S3_REGION"
+            value: "us-east-1"
+          - name: "AWS_ACCESS_KEY_ID"
+            value: admin
+          - name: "AWS_SECRET_ACCESS_KEY"
+            value: {{PASSWORD}}
           - name: "RUST_BACKTRACE"
             value: "1"
           - name: "RUST_LOG"
