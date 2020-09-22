@@ -11,13 +11,11 @@ spec:
     spec:
       containers:
       - name: api
-        image: salekd/astroplant-api:0.0.2
+        image: thomaschurchman/astroplant-api:0.0.1
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
-          name: "rest"
-        - containerPort: 8081
-          name: "ws"
+          name: "api"
         env:
           - name: "DATABASE_URL"
             value: postgres://postgres:{{PASSWORD}}@postgresql.default.svc.cluster.local:5432/astroplant
@@ -29,7 +27,15 @@ spec:
             value: admin
           - name: "MQTT_PASSWORD"
             value: {{PASSWORD}}
+          - name: "AWS_S3_ENDPOINT"
+            value: http://minio.default.svc.cluster.local:9000
+          - name: "AWS_S3_REGION"
+            value: "us-east-1"
+          - name: "AWS_ACCESS_KEY_ID"
+            value: admin
+          - name: "AWS_SECRET_ACCESS_KEY"
+            value: {{PASSWORD}}
           - name: "RUST_BACKTRACE"
             value: "1"
           - name: "RUST_LOG"
-            value: warn,astroplant_rs_api=debug
+            value: warn,astroplant_api=debug

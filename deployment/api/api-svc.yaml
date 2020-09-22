@@ -6,9 +6,7 @@ spec:
   type: ClusterIP
   ports:
     - port: 8080
-      name: rest
-    - port: 8081
-      name: ws
+      name: api
   selector:
     #app: ubuntu
     app: api

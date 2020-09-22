@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env -S bash
 kubectl delete deploy api
 kubectl delete svc api
 kubectl delete ingress api-letsencrypt

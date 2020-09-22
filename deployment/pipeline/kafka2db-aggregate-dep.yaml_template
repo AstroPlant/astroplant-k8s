@@ -11,18 +11,12 @@ spec:
     spec:
       containers:
       - name: kafka2db
-        image: salekd/astroplant-kafka2db:0.1.0
+        image: thomaschurchman/astroplant-kafka-connector:0.0.1
         imagePullPolicy: Always
-        command: [ "python", "kafka_db_connector/connector.py", "run", "--stream", "aggregate" ]
+        command: [ "astroplant-kafka-connector", "run", "--stream", "aggregate" ]
         env:
-          - name: "DATABASE_HOST"
-            value: postgresql.default.svc.cluster.local
-          - name: "DATABASE_PORT"
-            value: "5432"
-          - name: "DATABASE_USERNAME"
-            value: pipeline
-          - name: "DATABASE_PASSWORD"
-            value: {{PIPELINE_PASSWORD}}
+          - name: "DATABASE_URL"
+            value: postgres+psycopg2://pipeline:{{PIPELINE_PASSWORD}}@postgresql.default.svc.cluster.local:5432/astroplant
           - name: "DATABASE_DATABASE"
             value: astroplant
           - name: "KAFKA_HOST"
