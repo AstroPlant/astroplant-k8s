@@ -37,6 +37,24 @@ spec:
               value: http://community-api.{{CLUSTER}}
             - name: "ADMIN_JWT_SECRET"
               value: "{{JWT_SECRET}}"
+          volumeMounts:
+            - name: community-api-pv
+              mountPath: /usr/srv/app/public/
+      volumes:
+        - name: community-api-pv
+          persistentVolumeClaim:
+            claimName: community-api
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: community-api
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
