@@ -16,7 +16,7 @@ spec:
       containers:
         - name: community-api
           image: astroplant/astroplant-community-api:latest
-          imagePullPolicy: Always
+          # imagePullPolicy: Always
           ports:
             - containerPort: 1337
               name: "community-api"
@@ -39,7 +39,7 @@ spec:
               value: "{{JWT_SECRET}}"
           volumeMounts:
             - name: community-api-pv
-              mountPath: /usr/srv/app/public/
+              mountPath: /usr/srv/app/public/uploads/
       volumes:
         - name: community-api-pv
           persistentVolumeClaim:
