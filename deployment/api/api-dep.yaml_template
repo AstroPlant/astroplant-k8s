@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: thomaschurchman/astroplant-api:0.0.1
+        image: astroplant/astroplant-api:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -38,4 +38,4 @@ spec:
           - name: "RUST_BACKTRACE"
             value: "1"
           - name: "RUST_LOG"
-            value: warn,astroplant_api=debug
+            value: warn,astroplant_mqtt=debug,astroplant_api=debug
