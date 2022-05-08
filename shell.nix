@@ -1,6 +1,6 @@
 with import <nixpkgs> { };
 let
-  mo = { stdenv, fetchurl }:
+  mo = { lib, stdenv, fetchurl }:
     stdenv.mkDerivation rec {
       pname = "mo";
       version = "2.1.0";
@@ -16,7 +16,7 @@ let
         mv mo $out/bin/mo
       '';
 
-      meta = with stdenv.lib; {
+      meta = with lib; {
         description = "Mustache templates in pure bash.";
         homepage = "https://github.com/tests-always-included/mo";
         license = licenses.mit;
