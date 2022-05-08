@@ -11,7 +11,7 @@ data:
 
     [message_broker.auth]
     serial = "k-test"
-    secret = "{{SIMULATION_PASSWORD}}""
+    secret = "{{SIMULATION_PASSWORD}}"
 
     [debug]
     level = "INFO"
